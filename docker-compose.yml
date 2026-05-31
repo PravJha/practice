@@ -1,12 +1,26 @@
-version: "3.8"
+version: "3.9"
 
 services:
+
+  # ── Production app ──────────────────────────────────────────────────────────
   app:
-    build: .
+    build:
+      context: .
+      target: prod
     ports:
       - "8080:8080"
+    env_file: .env          # API keys injected at runtime — never baked into image
     environment:
-      - PYTHONUNBUFFERED=1
-    volumes:
-      - .:/app:ro
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+      PYTHONUNBUFFERED: "1"
+    restart: unless-stopped
+
+  # ── Test runner ─────────────────────────────────────────────────────────────
+  test:
+    build:
+      context: .
+      target: test
+    environment:
+      PYTHONUNBUFFERED: "1"
+      LLM_PROVIDER: mock    # tests never need a real API key
+    profiles:
+      - test                # only runs when: docker compose --profile test up

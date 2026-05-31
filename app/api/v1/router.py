@@ -1,15 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
-from app.core.llm_client import LLMClient, get_llm_client
-from app.schemas.summarization import SummarizationRequest, SummarizationResponse
+from app.api.v1.endpoints.summarization import router as summarization_router
 
-router = APIRouter(tags=["summarization"])
-
-
-@router.post("/v1/summarize", response_model=SummarizationResponse)
-async def summarize(
-    request: SummarizationRequest,
-    llm_client: LLMClient = Depends(get_llm_client),
-):
-    summary = llm_client.summarize(request.prompt)
-    return SummarizationResponse(summary=summary)
+router = APIRouter()
+router.include_router(summarization_router)

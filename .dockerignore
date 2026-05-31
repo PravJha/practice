@@ -1,0 +1,29 @@
+# Secrets — must never be baked into any image layer
+.env
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Version control
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Logs and local state
+*.log
+*.sqlite3
+
+# Test artefacts (only copied in the `test` build stage explicitly)
+.pytest_cache/
+htmlcov/
+.coverage
